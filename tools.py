@@ -203,6 +203,9 @@ def is_prime (n):
     n = int(n)
     if n == 1:
         return False
+
+    if n > 1e6:
+        return is_large_prime(int(n))
     upper = int(n ** 0.5)
     upper += 1
     for i in range(2,upper):
@@ -834,6 +837,7 @@ if __name__ == '__main__':
     # s = 1
     # t = (n-1) // (2**s)
     # print(fast_power(3,t,n))
+
 
 
 
