@@ -261,8 +261,8 @@ def get_inverse(a,m):
 
 def china_res(b:list,m:list):
     '''
-    the first element of returned tuple is the ANS
-    the second element of returned tuple is the product of M_i
+    the first element of returned tuple is the ANS\n
+    the second element of returned tuple is the product of M_i\n
     '''
     M = 1
     for item in m:
@@ -276,9 +276,10 @@ def china_res(b:list,m:list):
         M_i_inverse = get_inverse(M_i,m_i)
         ans += int(b[i] * M_i * M_i_inverse)
     
-    while (ans-M) > 0:
-        ans -= M
-
+    # ans %= M
+    ans = ans % M
+    # print(ans)
+    # print(M)
     return (ans,M)
 
 def ten2two(n:int,total_bits:int=8):
@@ -740,16 +741,32 @@ class RSA():
             c.append(c_tmp)
         return ''.join(c)
     
-    def unlock(self,c):
-        c = str(c)
-        m = []
-        for i in range(0,len(c),self.len):
-            c_char = int(c[i:i+self.len])
-            c_char = fast_power(c_char,self.d,self.n)
-            # c_char = self.index_to_char[c_char]
-            c_char = chr(c_char)
-            m.append(str(c_char))
-        return ''.join(m)
+    def unlock(self,c,use_china_res=False):
+        if not use_china_res:
+            c = str(c)
+            m = []
+            for i in range(0,len(c),self.len):
+                c_char = int(c[i:i+self.len])
+                c_char = fast_power(c_char,self.d,self.n)
+                # c_char = self.index_to_char[c_char]
+                c_char = chr(c_char)
+                m.append(str(c_char))
+            return ''.join(m)
+        else:
+            # count = 0
+            c = str(c)
+            m = []
+            for i in range(0,len(c),self.len):
+                print(f'Decoding No.{i} char...')
+                c_char = int(c[i:i+self.len])
+                # c_char = fast_power(c_char,self.d,self.n)
+                b1 = fast_power(c_char,self.d,self.p)
+                b2 = fast_power(c_char,self.d,self.q)
+                c_char = china_res([b1,b2],[self.p,self.q])[0]
+                # c_char = self.index_to_char[c_char]
+                c_char = chr(c_char)
+                m.append(str(c_char))
+            return ''.join(m)
     
 
 class DH():
@@ -825,7 +842,7 @@ if __name__ == '__main__':
     # for p in [89,107]:
     #     n = 2**p - 1
     #     print(f'p = {p} , n = {n} , {is_large_prime(n)}')
-    print(gcd(12,10,6,4,6454))
+    # print(gcd(12,10,6,4,6454))
 
 
     # d = DH()
@@ -841,16 +858,16 @@ if __name__ == '__main__':
 
 
 
-    # r = RSA()
-    # text = ''
-    # with open('out.txt','r',encoding='utf8') as f:
-    #     text = f.read()
-    # c = r.lock(text)
-    # print(c)
-    # with open('cipher_text.txt','w+') as f:
-    #     f.write(c)
-    # print()
-    # print(r.unlock(c))
+    r = RSA()
+    text = ''
+    with open('out.txt','r',encoding='utf8') as f:
+        text = f.read()
+    c = r.lock(text)
+    print(c)
+    with open('cipher_text.txt','w+') as f:
+        f.write(c)
+    print()
+    print(r.unlock(c,True))
 
 
     # all = 0
@@ -862,7 +879,8 @@ if __name__ == '__main__':
     #             true += 1
     # print(true / all)
 
-
+    # a = get_large_prime()
+    # print(a,get_prime_factors(a))
     
 
 
