@@ -841,6 +841,7 @@ def lian_fen_shu(x,K:int=10):
     构造简单的连分数\n
     x是需要计算的数字\n
     K是迭代次数 默认是10\n
+    返回一个元组：第1个元素是近似值，第2个元素是连分数，是一个list\n
     '''
     tmps = []
     a = math.floor(x)
@@ -856,7 +857,8 @@ def lian_fen_shu(x,K:int=10):
     ans = tmps[0]
     for index in range(1,len(tmps)):
         ans = 1/ans + tmps[index]
-    return ans
+    # print(tmps[::-1])
+    return ans,tmps[::-1]
 
 
 
@@ -880,7 +882,7 @@ if __name__ == '__main__':
     # print(fast_power(3,t,n))
 
 
-    print(lian_fen_shu(math.pi,1000) )
+    print(lian_fen_shu(2.718281828,20) )
 
     # r = RSA()
     # text = ''
@@ -913,3 +915,16 @@ if __name__ == '__main__':
     # for n in [191,191**2,113,113*9]:
     #     for b in [2,3,5,7]:
     #         print(f'n = {n} , b = {b} , mod = {fast_power(b,n-1,n)}')
+
+# a = [3,1,1,2,3,1,1]
+# a = a[::-1]
+# ans = a[0]
+# for i in range(1,len(a)):
+#     ans = 1/ans + a[i]
+# print(ans - 7700/2145)
+
+
+# a = 1
+# for i in range(10000):
+#     a = 1/a + 1
+# print(a - (5**0.5+1)/2)
