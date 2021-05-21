@@ -836,6 +836,30 @@ def get_large_prime(low:int=2**100,high:int=2**200,k:int=4):
             return n
 
 
+def lian_fen_shu(x,K:int=10):
+    '''
+    构造简单的连分数\n
+    x是需要计算的数字\n
+    K是迭代次数 默认是10\n
+    '''
+    tmps = []
+    a = math.floor(x)
+    x = x - a
+    k = 0
+    tmps.append(a)
+    while x != 0 and k < K:
+        a = math.floor(1 / x)
+        x = 1/x - a
+        tmps.append(a)
+        k += 1
+    tmps = tmps[::-1]
+    ans = tmps[0]
+    for index in range(1,len(tmps)):
+        ans = 1/ans + tmps[index]
+    return ans
+
+
+
 if __name__ == '__main__':
     # n = 2**257 - 1
     # n = 19260817
@@ -856,18 +880,18 @@ if __name__ == '__main__':
     # print(fast_power(3,t,n))
 
 
+    print(lian_fen_shu(math.pi,1000) )
 
-
-    r = RSA()
-    text = ''
-    with open('out.txt','r',encoding='utf8') as f:
-        text = f.read()
-    c = r.lock(text)
-    print(c)
-    with open('cipher_text.txt','w+') as f:
-        f.write(c)
-    print()
-    print(r.unlock(c,True))
+    # r = RSA()
+    # text = ''
+    # with open('out.txt','r',encoding='utf8') as f:
+    #     text = f.read()
+    # c = r.lock(text)
+    # print(c)
+    # with open('cipher_text.txt','w+') as f:
+    #     f.write(c)
+    # print()
+    # print(r.unlock(c,False))
 
 
     # all = 0
