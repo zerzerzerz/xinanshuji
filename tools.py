@@ -862,6 +862,77 @@ def lian_fen_shu(x,K:int=10):
 
 
 
+class Fenshu():
+    def __init__(self,num=1,den=1):
+        '''num是分子默认为1\nden是分母默认为1\n'''
+        super().__init__()
+        self.num = int(num)
+        self.den = int(den)
+    
+    def add(self,y):
+        num = self.num * y.den + self.den * y.num
+        den = self.den * y.den
+        tmp = gcd(num,den)
+        num //= tmp
+        den //= tmp
+        return Fenshu(num,den)
+    
+    def sub(self,y):
+        num = self.num * y.den - self.den * y.num
+        den = self.den * y.den
+        tmp = gcd(num,den)
+        num //= tmp
+        den //= tmp
+        return Fenshu(num,den)
+    
+    def mul(self,y):
+        num = self.num * y.num
+        den = self.den * y.den
+        tmp = gcd(num,den)
+        num //= tmp
+        den //= tmp
+        return Fenshu(num,den)
+    
+    def inv(self):
+        return Fenshu(self.den,self.num)
+    
+    def div(self,y):
+        return self.mul(y.inv())
+
+    def display(self):
+        return self.num,self.den
+    
+    def xiaoshu(self):
+        return self.num / self.den
+
+    def to_lianfenshu(self):
+        '''转换成连分数的形式\n如果这个分数是负数，会被转换成正数来进行操作\n'''
+        ans = []
+        num = abs(self.num)
+        den = abs(self.den)
+        zhengshu = num // den
+        xiaoshu = Fenshu(num - zhengshu * den,den)
+        ans.append(zhengshu)
+        while xiaoshu.num != 0:
+            xiaoshu = xiaoshu.inv()
+            zhengshu = xiaoshu.num // xiaoshu.den
+            xiaoshu = Fenshu(xiaoshu.num - zhengshu * xiaoshu.den, xiaoshu.den)
+            ans.append(zhengshu)
+        return ans
+
+
+
+def lianfenshu_to_float(X:list):
+    '''从一个list的连分数转换成分子/分母\n'''
+    X = [Fenshu(x) for x in X]
+    ans = X[-1]
+    X = X[0:-1][::-1]
+    for x in X:
+        ans = ans.inv().add(x)
+    return ans.display(),ans.xiaoshu()
+
+
+
 if __name__ == '__main__':
     # n = 2**257 - 1
     # n = 19260817
@@ -882,7 +953,21 @@ if __name__ == '__main__':
     # print(fast_power(3,t,n))
 
 
-    print(lian_fen_shu(2.718281828,20) )
+    # print(lian_fen_shu(math.pi,10) )
+    # with open('ans.json','w',encoding='utf8') as f:
+    #     ts = [(20210520,113),(210520,191)]
+    #     ANS = {}
+    #     for index,t in enumerate(ts):
+    #         ans = {}
+    #         a,b = t
+    #         ans['a'] = a
+    #         ans['b'] = b
+    #         ans['连分数'] = lian_fen_shu(a/b,100)[1]
+    #         # print(lian_fen_shu(a/b,100))
+    #         # print(bezout(a,b))
+    #         ans['a的系数'],ans['b的系数'] = bezout(a,b)
+    #         ANS[index] = ans
+    #     json.dump(ANS,f,ensure_ascii=False)
 
     # r = RSA()
     # text = ''
@@ -907,7 +992,30 @@ if __name__ == '__main__':
 
     # a = get_large_prime()
     # print(a,get_prime_factors(a))
+    pi = [3,7,15,1,293,10,3,8,2,1,3,11,1,2,1,2,1]
+    ans = lianfenshu_to_float(pi)
+    num = ans[0][0]
+    den = ans[0][1]
+    print(ans)
+    print(pi)
+    print(Fenshu(num,den).to_lianfenshu())
+    print(Fenshu(22,7).xiaoshu())
+
+
+    # a = Fenshu(1,3)
+    # b = Fenshu(2,5)
+    # c = a.div(b)
+    # print(c.display())
+
     
+
+    # ms = [5,6,7]
+    # m = 1
+    # for _ in ms:
+    #     m *= _
+    # Ms = list(map(lambda x:m//x,ms))
+    # for Mi,mi in zip(Ms,ms):
+    #         print(f'{m}/{mi}={Mi}模{mi}逆元是{get_inverse(Mi,mi)}')
 
 
     pass
