@@ -29,6 +29,9 @@ This is an img.
 ![Genshin](./Snipaste_2022-02-18_00-20-14.png)
 Click me to open [Bilibili](https://bilibili.com)
 
+Embed video
+<iframe src="//player.bilibili.com/player.html?aid=253853934&bvid=BV1TY411L7ZD&cid=501182278&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
 For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
 ### Jekyll Themes
