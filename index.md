@@ -25,6 +25,9 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
+This is an img.
+![Genshin](./Snipaste_2022-02-18_00-20-14.png)
+Click me to open [Bilibili](https://bilibili.com)
 
 For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
